@@ -1,3 +1,8 @@
+body {
+  font-family: "Helvetica Neue";
+  margin-top:10px;
+}
+
 .App {
   text-align: center;
 }
@@ -31,3 +36,83 @@
     transform: rotate(360deg);
   }
 }
+
+.playoffRow {
+  background-color: #94C380;
+}
+
+.lotteryRow {
+  background-color: white;
+}
+
+.playerName {
+  font-size:30px;
+  font-weight: 700;
+  color: #000;
+}
+
+.playerSmall {
+  font-weight:400px;
+  line-height:18px;
+  font-size:14px;
+  vertical-align: top;
+}
+
+.center {
+  width: 100%;
+  margin: 0 auto;
+  padding-left:15px;
+}
+
+.playerBigStat {
+  background-color: white;
+  width: 80px;
+  height: 50px;
+  display: inline-block;
+  margin-right:1px;
+}
+
+.playerBigStatHeader {
+  font-size:15px;
+  color: grey;
+  width: 50%;
+  margin: 0 auto;
+  font-weight: bold;
+  margin-bottom:-5;
+  line-height:18px;
+}
+
+.playerBigStatData {
+  font-size:25px;
+  color: #000;
+  width: 50%;
+  margin: 0 auto;
+  font-weight: bold;
+  line-height:28px;
+}
+
+.playerStatsOneLine {
+  display: inline-block;
+  width:150px;
+  background-color: white;
+  margin-right:1px;
+  line-height: 20px;
+  vertical-align: top;
+}
+
+.playerStatSmall {
+  width: 90%;
+  margin: 0 auto;
+  font-size:13px;
+  line-height: 20px;
+}
+
+.playerStatSmallHeader {
+  font-weight: 700;
+  color: black;
+}
+/*
+.test {
+  background-color: purple;
+} */
+

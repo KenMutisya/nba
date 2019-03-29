@@ -31,38 +31,28 @@ const PlayerESPN = require('./model/PlayerESPN');
 axios.defaults.withCredentials = true;
 
 Router.get('/standings', areStandingsUpdated, (req, res) => {
-  Standings.findOneAndRemove({}, {}, () => console.log('removed old standings'));
 
+  Standings.findOneAndRemove({}, {}, () => console.log('Updating standings...'));
+
+  const west = [];
+  const east = [];
   axios
-    .get(
-      `https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/seasons/${season_year}/${nba_season}/standings.${format}?api_key=${apiKey}`
-    )
+    .get(`https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/seasons/${season_year}/${nba_season}/standings.${format}?api_key=${apiKey}`)
     .then(response => {
-      const [pac, sw, nw] = response.data.conferences[0].divisions;
-      const [se, cen, atl] = response.data.conferences[1].divisions;
+      response.data.conferences.map((conf, i) => conf.divisions.map(div => div.teams.map(team => {
+        if (i === 0) {
+          west.push({
+            name: team.name, market: team.market, wins: team.wins, losses: team.losses,
+            win_pct: team.win_pct, point_diff: team.point_diff, streak: team.streak
+          });
+        } else {
+          east.push({
+            name: team.name, market: team.market, wins: team.wins, losses: team.losses,
+            win_pct: team.win_pct, point_diff: team.point_diff, streak: team.streak
+          });
+        }
+      })));
 
-      function division_to_team(team) {
-        const info = {
-          name: team.name,
-          market: team.market,
-          wins: team.wins,
-          losses: team.losses,
-          win_pct: team.win_pct,
-          point_dif: team.point_diff,
-          streak: team.streak
-        };
-        return info;
-      }
-      const atlantic = atl.teams.map(division_to_team);
-      const central = cen.teams.map(division_to_team);
-      const southeast = se.teams.map(division_to_team);
-
-      const pacific = pac.teams.map(division_to_team);
-      const southwest = sw.teams.map(division_to_team);
-      const northwest = nw.teams.map(division_to_team);
-
-      const east = atlantic.concat(central).concat(southeast);
-      const west = pacific.concat(southwest).concat(northwest);
       east.sort((a, b) => b.win_pct - a.win_pct);
       west.sort((a, b) => b.win_pct - a.win_pct);
 
@@ -72,12 +62,8 @@ Router.get('/standings', areStandingsUpdated, (req, res) => {
       });
       standings.save();
 
-      res.json({
-        east,
-        west
-      });
+      res.json({ east, west });
     })
-    .catch(error => console.log(error));
 });
 
 Router.get('/league_hierarchy', (req, res) => {
@@ -100,24 +86,6 @@ Router.get('/all_teams', (req, res) => {
 });
 
 Router.get('/team/:alias', (req, res) => {
-  // function getTeamID(alias) {
-  //   return Team.findOne({
-  //     alias
-  //   })
-  //     .then(team => team.id)
-  //     .catch(err => res.json(err));
-  // }
-  // getTeamID(req.params.alias).then(team_id => {
-  //   axios
-  //     .get(
-  //       `https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/teams/${team_id}/profile.${format}?api_key=${apiKey}`
-  //     )
-  //     .then(team => {
-  //       team.data.players.map(player => axios.post(`http://localhost:8080/api/add_player`, player));
-  //       return res.send(team.data);
-  //     })
-  //     .catch(err => res.json(err));
-  // });
   const { alias } = req.params;
   Team.findOne({ alias }).then(team => (
     axios

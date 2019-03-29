@@ -4,25 +4,26 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.1",
-    "mongoose": "^5.4.13",
+    "mongoose": "^5.4.20",
     "multer": "^1.4.1",
     "nba-color": "^1.4.0",
     "nodemon": "^1.18.10",
     "prop-types": "^15.7.2",
-    "react": "^16.8.2",
-    "react-bootstrap": "^1.0.0-beta.5",
-    "react-bootstrap-table-next": "^3.0.0",
-    "react-dom": "^16.8.2",
+    "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.6",
+    "react-bootstrap-table-next": "^3.0.3",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5",
-    "react-table": "^6.9.2"
+    "react-table": "^6.9.2",
+    "eslint": "5.12.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -40,7 +41,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "eslint": "^5.12.0",
+    "eslint": "^5.15.3",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-react-airbnb-prettier": "^0.0.10",
     "eslint-plugin-import": "^2.16.0",

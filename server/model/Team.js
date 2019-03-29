@@ -22,11 +22,9 @@ const Team = new Schema({
         type: String,
         lowercase: true,
         trim: true
-    },
-    logo: {
-        data: String,
-        contentType: String
     }
-});
+}, {
+        stict: false
+    });
 
 module.exports = mongoose.model('Team', Team);

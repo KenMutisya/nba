@@ -26,7 +26,7 @@ export default class Roster extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { alias } = this.props.match.params;
     axios.get(`http://localhost:8080/api/team/${alias}`).then(response => {
       const team = response.data;
@@ -148,17 +148,11 @@ export default class Roster extends Component {
           </Col>
         </Row>
         <Row>
-          {/* <Col md={3} lg={3}>
-                    fdf
-                    </Col> */}
 
           <Col md={9} lg={9}>
             {this.displayRoster(players, hex)}
           </Col>
 
-          {/* <Col md={3} lg={3}>
-                    fdf
-                    </Col> */}
         </Row>
       </Container>
     );

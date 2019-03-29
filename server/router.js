@@ -80,86 +80,51 @@ Router.get('/standings', areStandingsUpdated, (req, res) => {
     .catch(error => console.log(error));
 });
 
-Router.post('/add_team', teamValidation, (req, res) => {
-  const team = new Team(req.body);
-
-  team
-    .save()
-    // eslint-disable-next-line no-shadow
-    .then(team => {
-      res.send({
-        team,
-        reg: true
-      });
+Router.get('/league_hierarchy', (req, res) => {
+  axios
+    .get(`https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/league/hierarchy.${format}?api_key=${apiKey}`)
+    .then(response => {
+      response.data.conferences.map(conf => conf.divisions.map(div => div.teams.map(team => {
+        const newTeam = new Team({ name: team.name, market: team.market, alias: team.alias, id: team.id });
+        return newTeam.save()
+          .then(saved => console.log(saved.alias, " saved."))
+          .catch((err) => console.log("DB ERROR", err));
+      })));
+      res.send(response.data);
     })
-    .catch(err => {
-      console.log('Error: ', err);
-    });
+    .catch((err) => res.send(err));
 });
-
-// Router.post('/team_data', () => {
-//   axios
-//     .get(
-//       `https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/league/hierarchy.${format}?apiKey=${apiKey}`
-//     )
-//     .then(response => {
-//       const [pac, sw, nw] = response.data.conferences[0].divisions;
-//       const [se, cen, atl] = response.data.conferences[1].divisions;
-
-//       function division_to_team(team) {
-//         const info = {
-//           name: team.name,
-//           market: team.market,
-//           alias: team.alias,
-//           id: team.id
-//         };
-//         return info;
-//       }
-
-//       const atlantic = atl.teams.map(division_to_team);
-//       const central = cen.teams.map(division_to_team);
-//       const southeast = se.teams.map(division_to_team);
-
-//       const pacific = pac.teams.map(division_to_team);
-//       const southwest = sw.teams.map(division_to_team);
-//       const northwest = nw.teams.map(division_to_team);
-
-//       const east = atlantic.concat(central).concat(southeast);
-//       const west = pacific.concat(southwest).concat(northwest);
-
-//       const teams = east.concat(west);
-
-//       teams.map(team => {
-//         axios
-//           .post('http://localhost:8080/api/add_team', team)
-//           .catch(err => console.log('aaa', err));
-//       });
-//     });
-// });
 
 Router.get('/all_teams', (req, res) => {
   Team.find().then(teams => res.json(teams));
 });
 
 Router.get('/team/:alias', (req, res) => {
-  function getTeamID(alias) {
-    return Team.findOne({
-      alias
-    })
-      .then(team => team.id)
-      .catch(err => res.json(err));
-  }
-  getTeamID(req.params.alias).then(team_id => {
+  // function getTeamID(alias) {
+  //   return Team.findOne({
+  //     alias
+  //   })
+  //     .then(team => team.id)
+  //     .catch(err => res.json(err));
+  // }
+  // getTeamID(req.params.alias).then(team_id => {
+  //   axios
+  //     .get(
+  //       `https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/teams/${team_id}/profile.${format}?api_key=${apiKey}`
+  //     )
+  //     .then(team => {
+  //       team.data.players.map(player => axios.post(`http://localhost:8080/api/add_player`, player));
+  //       return res.send(team.data);
+  //     })
+  //     .catch(err => res.json(err));
+  // });
+  const { alias } = req.params;
+  Team.findOne({ alias }).then(team => (
     axios
-      .get(
-        `https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/teams/${team_id}/profile.${format}?api_key=${apiKey}`
-      )
-      .then(team => {
-        team.data.players.map(player => axios.post(`http://localhost:8080/api/add_player`, player));
-        return res.send(team.data);
-      })
-      .catch(err => res.json(err));
-  });
+      .get(`https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/teams/${team.id}/profile.${format}?api_key=${apiKey}`)
+      .then(roster => res.send(roster.data))
+      .catch(err => res.send(err))
+  ));
 });
 
 Router.post('/add_player', playerValidation, (req, res) => {
@@ -196,7 +161,7 @@ Router.get('/player/:id', (req, res) => {
   //     res.json(player.data);
   //   });
   PlayerTest.findOne().then(player => {
-
+    // Get Iman Shumpter for testing
     res.json(player);
   })
 });

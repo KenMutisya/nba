@@ -73,7 +73,7 @@ export default class RosterSmall extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { alias } = this.props;
     axios.get(`http://localhost:8080/api/team/${alias}`).then(response => {
       const team = response.data;

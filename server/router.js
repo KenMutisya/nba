@@ -172,47 +172,11 @@ Router.get('/team_ids', (req, res) => {
 });
 
 Router.get('/team_logos', () => {
-  // TeamID.find().then(team => team.abbreviation).then(x => download(x)).catch(e => console.log(e));
   TeamID.find().select('abbreviation -_id').lean().exec().then(x => x.map(team => download(team.abbreviation)));
-  // console.log(x);
-
-  // x.forEach(q => q && console.log(q[0]))
-  // x.then(data => data).then(pp => pp.map(v => console.log(v.abbreviation)));
-
-  // Promise.all([x]).then(data => data[0]).map(z => z.abbreviation).then(q => console.log(q));
-  // Promise.all(x)
-
-
-  // Promise.all(x.map(team => team.abbreviation)).then(q => console.log(q));
-
 })
 
 Router.get('/player_faces', () => {
-  // TeamID.find().then(team => team.abbreviation).then(x => download(x)).catch(e => console.log(e));
   PlayerESPN.find().select('playerId -_id').lean().exec().then(x => x.map(player => downloadPlayer(player.playerId)));
-  // console.log(x);
-
-  // x.forEach(q => q && console.log(q[0]))
-  // x.then(data => data).then(pp => pp.map(v => console.log(v.abbreviation)));
-
-  // Promise.all([x]).then(data => data[0]).map(z => z.abbreviation).then(q => console.log(q));
-  // Promise.all(x)
-
-
-  // Promise.all(x.map(team => team.abbreviation)).then(q => console.log(q));
-
 })
-
-// Router.get('/save_logos', () => {
-//   TeamID.find().select('abbreviation -_id').lean().exec().then(x => x.map(team => {
-
-//     const pathLogos = path.join(__dirname, '../', 'assets/logos');
-//     const path2 = path.resolve(pathLogos, `${team.abbreviation}.svg`)
-//     return TeamID.findOneAndUpdate({ "abbreviation": team.abbreviation }, { "logo": { "data": fs.readFileSync(path2), "contentType": String } }, (err, doc) => {
-//       if (err) throw err;
-//       else console.log("updated");
-//     })
-//   }))
-// })
 
 module.exports = Router;

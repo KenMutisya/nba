@@ -14,7 +14,7 @@ class Standings extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     axios.get('http://localhost:8080/api/standings').then(response => {
       axios.get('http://localhost:8080/api/team_ids').then(teams => {
 
@@ -26,36 +26,6 @@ class Standings extends Component {
       });
     });
   }
-
-  // http://www.nba.com/assets/logos/teams/secondary/web/BOS.svg
-  // confStandings(conference, teams) {
-  //     return (
-  //         <Table bordered size="sm">
-  //             <thead>
-  //                 <tr>
-  //                     <th>Team</th>
-  //                     <th>Wins</th>
-  //                     <th>Losses</th>
-  //                     <th>Win %</th>
-  //                 </tr>
-  //             </thead>
-  //             <tbody>
-  //                 {conference.map((team, index) => {
-  //                     teams.filter(x => x.location === team.market)
-  //                     return (
-  //                         <tr className={index <= 7 ? 'playoffRow' : 'lotteryRow'} key={index}>
-  //                         <td> <img src="https://s.yimg.com/cv/apiv2/default/nba/20181226/70x70/timberwolves_wbg.png" height="25"></img><strong style={{marginLeft:5}}>{team.market.concat(' ', team.name)}</strong></td>
-  //                         <td>{team.wins}</td>
-  //                         <td>{team.losses}</td>
-  //                         <td>{team.win_pct}</td>
-
-  //                     </tr>
-  //                     )
-  //                 })}
-  //             </tbody>
-  //         </Table>
-  //     )
-  // }
 
   render() {
     const { west, east, teams } = this.state;

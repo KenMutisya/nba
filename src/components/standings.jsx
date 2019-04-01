@@ -44,14 +44,3 @@ class Standings extends Component {
 }
 
 export default Standings;
-
-/*
-TODO:
-
-1. Call Standings API from the backend
-2. Display each conference as a table
-3. Three buttons (total, home, away)
-4. CSS
-4a. What determines component size etc? Component itself or
-the place where it's called?
-*/

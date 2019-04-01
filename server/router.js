@@ -120,18 +120,18 @@ Router.post('/add_player', playerValidation, (req, res) => {
 });
 
 Router.get('/player/:id', (req, res) => {
-  // const player_id = req.params.id;
-  // axios
-  //   .get(
-  //     `https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/players/${player_id}/profile.${format}?api_key=${apiKey}`
-  //   )
-  //   .then(player => {
-  //     res.json(player.data);
-  //   });
-  PlayerTest.findOne().then(player => {
-    // Get Iman Shumpter for testing
-    res.json(player);
-  })
+  const player_id = req.params.id;
+  axios
+    .get(
+      `https://api.sportradar.us/nba/${access_level}/${version}/${language_code}/players/${player_id}/profile.${format}?api_key=${apiKey}`
+    )
+    .then(player => {
+      res.json(player.data);
+    });
+  // PlayerTest.findOne().then(player => {
+  //   // Get Iman Shumpter for testing
+  //   res.json(player);
+  // })
 });
 
 Router.get('/news', (req, res) => {
